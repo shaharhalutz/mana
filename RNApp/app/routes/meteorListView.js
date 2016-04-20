@@ -1,21 +1,37 @@
 import React, { View, Text, Component, StyleSheet, TouchableOpacity } from 'react-native';
 import Meteor, { connectMeteor, MeteorListView } from 'react-native-meteor';
 import Button from '../components/button';
+import Router from '../router';
+
 
 @connectMeteor
 class MeteorListViewComponent extends Component {
   getMeteorData() {
-    const itemsHandle = Meteor.subscribe('items');
+    const itemsHandle = Meteor.subscribe('battles');
     return {
       itemsReady: itemsHandle.ready()
     };
+  }
+
+  handleJoinBattle(item) {
+    //const { battle } = {item};
+    Meteor.call('joinBattle',item._id);
+    console.dir(item);
+    console.dir(this.props);
+
+    // open Battle Detail:
+    const { navigator } = this.props;
+    navigator.push(Router["getBattleDetail"]());
   }
 
   renderRow(item) {
     return (
       <View style={styles.row}>
         <Text style={styles.rowText}>{item.name}</Text>
-        <TouchableOpacity onPress={() => Meteor.call('removeItem', item._id)}>
+        <View style={styles.buttonContainer}>
+          <Button text="Join" onPress={() => this.handleJoinBattle(item)} />
+        </View>
+        <TouchableOpacity onPress={() => Meteor.call('removeBattle', item._id)}>
           <Text style={[styles.rowText, styles.deleteText]}>X</Text>
         </TouchableOpacity>
       </View>
@@ -31,19 +47,19 @@ class MeteorListViewComponent extends Component {
         </View>
       )
     }
-    
+
     return (
       <View style={styles.container}>
         <View style={styles.buttonContainer}>
-          <Button text="Add Item" onPress={() => Meteor.call('addItem')} />
+          <Button text="Create Battle" onPress={() => Meteor.call('createBattle')} />
         </View>
 
         <MeteorListView
-          collection="items"
+          collection="battles"
           style={styles.container}
           // selector={{}}
           options={{sort: {createdAt: -1}}}
-          renderRow={this.renderRow}
+          renderRow={this.renderRow.bind(this)}
         />
       </View>
     );

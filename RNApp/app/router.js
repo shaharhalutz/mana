@@ -6,6 +6,8 @@ import Accounts from './routes/accounts';
 import MeteorListView from './routes/meteorListView';
 import MeteorComplexListView from './routes/meteorComplexListView';
 import EditItem from './routes/editItem';
+import BattleDetail from './routes/battleDetail';
+
 
 const Router = {
   getList() {
@@ -78,7 +80,19 @@ const Router = {
         return 'Edit Item';
       }
     }
-  }
+  },
+
+  getBattleDetail() {
+    return {
+      renderScene(nav) {
+        return <BattleDetail navigator={nav} />
+      },
+
+      getTitle() {
+        return 'Battle Detail';
+      }
+    }
+  },
 };
 
 export default Router;
