@@ -5,7 +5,7 @@ import Router from '../router';
 
 
 @connectMeteor
-class MeteorListViewComponent extends Component {
+class BattlesContainer extends Component {
   getMeteorData() {
     const itemsHandle = Meteor.subscribe('battles');
     return {
@@ -16,8 +16,6 @@ class MeteorListViewComponent extends Component {
   handleJoinBattle(item) {
     //const { battle } = {item};
     Meteor.call('joinBattle',item._id);
-    console.dir(item);
-    console.dir(this.props);
 
     // open Battle Detail:
     const { navigator } = this.props;
@@ -66,7 +64,7 @@ class MeteorListViewComponent extends Component {
   }
 }
 
-export default MeteorListViewComponent;
+export default BattlesContainer;
 
 const styles = StyleSheet.create({
   container: {

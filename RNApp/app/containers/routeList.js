@@ -2,11 +2,9 @@ import React, { View, Text, Component, ListView, StyleSheet, TouchableOpacity } 
 import Router from '../router';
 
 const ROUTE_LIST = [
-  { name: 'Meteor Connection', route: 'getMeteorConnection' },
   { name: 'Accounts', route: 'getAccounts' },
-  { name: 'Meteor List View', route: 'getMeteorListView' },
-  { name: 'Meteor Complex List View', route: 'getMeteorComplexListView' },
-  { name: 'Edit Item', route: 'getEditItem' }
+  { name: 'Battles', route: 'getBattles' },
+  { name: 'Dojo', route: 'getDojo' }
 ];
 
 class RouteList extends Component {

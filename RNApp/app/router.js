@@ -1,12 +1,10 @@
 import React from 'react-native';
 
-import RouteList from './routes/routeList';
-import Connection from './routes/connection';
-import Accounts from './routes/accounts';
-import MeteorListView from './routes/meteorListView';
-import MeteorComplexListView from './routes/meteorComplexListView';
-import EditItem from './routes/editItem';
-import BattleDetail from './routes/battleDetail';
+import RouteList from './containers/routeList';
+import Accounts from './containers/accounts';
+import BattlesContainer from './containers/battles';
+import Dojo from './containers/dojo';
+import BattleDetail from './containers/battleDetail';
 
 
 const Router = {
@@ -18,18 +16,6 @@ const Router = {
 
       getTitle() {
         return 'Home';
-      }
-    }
-  },
-
-  getMeteorConnection() {
-    return {
-      renderScene(nav) {
-        return <Connection navigator={nav} />
-      },
-
-      getTitle() {
-        return 'Meteor Connection';
       }
     }
   },
@@ -46,38 +32,26 @@ const Router = {
     }
   },
 
-  getMeteorListView() {
+  getBattles() {
     return {
       renderScene(nav) {
-        return <MeteorListView navigator={nav} />
+        return <BattlesContainer navigator={nav} />
       },
 
       getTitle() {
-        return 'Meteor List View';
+        return 'Battles';
       }
     }
   },
 
-  getMeteorComplexListView() {
+  getDojo() {
     return {
       renderScene(nav) {
-        return <MeteorComplexListView navigator={nav} />;
+        return <Dojo navigator={nav} />;
       },
 
       getTitle() {
-        return 'Meteor Complex List View';
-      }
-    }
-  },
-
-  getEditItem() {
-    return {
-      renderScene(nav) {
-        return <EditItem navigator={nav} />;
-      },
-
-      getTitle() {
-        return 'Edit Item';
+        return 'Dojo';
       }
     }
   },
@@ -92,7 +66,7 @@ const Router = {
         return 'Battle Detail';
       }
     }
-  },
+  }
 };
 
 export default Router;
