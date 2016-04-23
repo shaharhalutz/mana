@@ -56,10 +56,10 @@ const Router = {
     }
   },
 
-  getBattleDetail() {
+  getBattle(battleId) {
     return {
       renderScene(nav) {
-        return <BattleDetail navigator={nav} />
+        return <Battle navigator={nav} battleId = {battleId}/>
       },
 
       getTitle() {

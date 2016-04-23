@@ -19,7 +19,7 @@ class BattlesContainer extends Component {
 
     // open Battle Detail:
     const { navigator } = this.props;
-    navigator.push(Router["getBattleDetail"]());
+    navigator.push(Router["getBattle"](item._id));
   }
 
   renderRow(item) {
