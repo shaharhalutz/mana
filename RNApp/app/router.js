@@ -4,7 +4,7 @@ import RouteList from './containers/routeList';
 import Accounts from './containers/accounts';
 import BattlesContainer from './containers/battles';
 import Dojo from './containers/dojo';
-import BattleDetail from './containers/battleDetail';
+import Battle from './containers/battle';
 
 
 const Router = {
