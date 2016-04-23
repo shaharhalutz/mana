@@ -34,11 +34,16 @@ Meteor.methods({
     // already joined this battle?
     const joinedAlready = Players.findOne({userId : Meteor.userId(),battleId:_id});
     if (!joinedAlready){
-      Players.insert({
+      const newPlayerId = Players.insert({
         userId:Meteor.userId(),
         battleId:_id
       });
-      console.log('joinBattle:  done. Players count: '+Players.find().count());
+
+      // DEBUG:
+      const newPlayer = Players.findOne({_id : newPlayerId});
+      if(newPlayer){
+        console.log('joinBattle:  done. Players joined: '+newPlayer.userInfo().emails[0].address);
+      }
     }
   }
 });
