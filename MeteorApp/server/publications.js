@@ -9,3 +9,7 @@ Meteor.publish('battles', function() {
 Meteor.publish('players', function() {
   return Players.find();
 });
+
+Meteor.publish('users', function() {
+  return Meteor.users.find();
+});
