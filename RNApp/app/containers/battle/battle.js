@@ -1,6 +1,5 @@
 
 // 1.TEST Backend Functionality:
-// TBD: test reactablility (join battles and see if players list is updated)
 // TBD: do we create a compositeSurscribe per component? - https://atmospherejs.com/reywood/publish-composite
 // TBD: rethink collection helpers (model behaviours) maybe components will correlate to model and implement behaviour themselves. - (try with player component below:)
 // TBD: implement Player component to separate from battle compoenent
@@ -12,37 +11,22 @@
 
 import React, { View, Text, Component, StyleSheet, TouchableOpacity } from 'react-native';
 import Meteor, { connectMeteor, MeteorComplexListView } from 'react-native-meteor';
-import Button from '../components/button';
-import Router from '../router';
-import PlayerActions from '../model/player'
-
+import Player from './player';
 
 @connectMeteor
 class Battle extends Component {
-  constructor() {
-    super();
-    this.playerActions = new PlayerActions()
-  }
 
   getMeteorData() {
     const itemsHandle = Meteor.subscribe('players');
-    const usersHandle = Meteor.subscribe('users');
     return {
-      itemsReady: itemsHandle.ready(),
-      usersReady: usersHandle.ready()
+      playersReady: itemsHandle.ready()
     };
   }
-
-  // TBD: move to separate Player(View) Component.name():
-  getPlayerName(player){
-    return this.playerActions.userInfo(player,Meteor.collection('users')).emails[0].address;
-  }
-
+  
   renderRow(item) {
     return (
-      <View style={styles.row}>
-        <Text style={styles.rowText}>{ this.getPlayerName(item)} ({item.hp}/{item.mp})</Text>
-      </View>
+      <Player dataItem={item}>
+      </Player>
     );
   }
 
@@ -50,10 +34,9 @@ class Battle extends Component {
     const players = Meteor.collection('players').find({battleId:this.props.battleId});
     return players;
   }
-
   render() {
-    const { itemsReady ,usersReady} = this.data;
-    if (!itemsReady || !usersReady) {
+    const { playersReady } = this.data;
+    if (!playersReady) {
       return (
         <View>
           <Text>Loading...</Text>
@@ -63,11 +46,10 @@ class Battle extends Component {
 
     return (
       <View style={styles.container}>
-
         <MeteorComplexListView
           style={styles.container}
           elements={this.getPlayers.bind(this)}
-          renderRow={this.renderRow.bind(this)}        />
+          renderRow={this.renderRow}        />
       </View>
     );
   }
