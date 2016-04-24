@@ -62,6 +62,7 @@ class Battle extends Component {
 
   onCastSpell(spellId){
     console.log('onCastSpell:'+spellId);
+    Meteor.call('processSpell',spellId);
   }
 
   render() {
