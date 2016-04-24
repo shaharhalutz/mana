@@ -34,7 +34,15 @@ class Player extends Component {
 
   // TBD: does this go in a utily method or a user component ?
   getUserName(){
-    return this.userInfo().emails[0].address;
+    return this.userInfo().profile.name;
+  }
+
+  getUserMP(){
+    return this.userInfo().profile.mp;
+  }
+
+  getUserHP(){
+    return this.userInfo().profile.hp;
   }
 
   render() {
@@ -49,7 +57,7 @@ class Player extends Component {
 
     return (
       <View style={styles.row}>
-        <Text style={styles.rowText}>{ this.getUserName()} ({this.props.dataItem.hp}/{this.props.dataItem.mp})</Text>
+        <Text style={styles.rowText}>{ this.getUserName()} HP: {this.props.dataItem.hp}/{this.getUserHP()}  MP: {this.props.dataItem.mp}/{this.getUserMP()}</Text>
         <CheckBox label=''
                   checked={this.state.selected}
                   onChange={  this.onSelectedChanged.bind(this)}
