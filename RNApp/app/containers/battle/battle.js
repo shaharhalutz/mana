@@ -16,16 +16,40 @@ import Player from './player';
 @connectMeteor
 class Battle extends Component {
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      selectedPlayerIds: []
+    };
+  }
   getMeteorData() {
     const itemsHandle = Meteor.subscribe('players');
     return {
       playersReady: itemsHandle.ready()
     };
   }
-  
+
+  onPlayerSelectionChanged(event,playerId,selected){
+    console.log('onPlayerSelected:');
+    if(selected){
+      // add:
+      this.setState({ selectedPlayerIds: [...this.state.selectedPlayerIds, playerId]});
+    }
+    else{
+      // remove:
+      const indexToRemove = this.state.selectedPlayerIds.indexOf(playerId);
+      if (indexToRemove > -1) {
+        const newAr = (this.state.selectedPlayerIds.slice(0,indexToRemove)).concat(this.state.selectedPlayerIds.slice((indexToRemove+1),this.state.selectedPlayerIds.length));
+        this.setState({ selectedPlayerIds: newAr});
+      }
+    }
+
+    console.log(this.state.selectedPlayerIds.length);
+  }
+
   renderRow(item) {
     return (
-      <Player dataItem={item}>
+      <Player dataItem={item} onSelectedChanged={this.onPlayerSelectionChanged.bind(this)}>
       </Player>
     );
   }
@@ -34,6 +58,7 @@ class Battle extends Component {
     const players = Meteor.collection('players').find({battleId:this.props.battleId});
     return players;
   }
+  
   render() {
     const { playersReady } = this.data;
     if (!playersReady) {
@@ -49,7 +74,7 @@ class Battle extends Component {
         <MeteorComplexListView
           style={styles.container}
           elements={this.getPlayers.bind(this)}
-          renderRow={this.renderRow}        />
+          renderRow={this.renderRow.bind(this)}        />
       </View>
     );
   }

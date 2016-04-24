@@ -1,8 +1,25 @@
 import React, { View, Text, Component, StyleSheet, TouchableOpacity } from 'react-native';
 import Meteor, { connectMeteor, MeteorListView } from 'react-native-meteor';
+import CheckBox from 'react-native-checkbox';
+
+
 
 @connectMeteor
 class Player extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      selected: false
+    };
+  }
+
+  onSelectedChanged(event) {
+    console.log('onSelectedChanged:');
+    this.setState({ selected: !this.state.selected });
+    console.log(this.state.selected);
+    this.props.onSelectedChanged(event,this.props.dataItem._id,this.state.selected);
+  }
 
   getMeteorData() {
     const itemsHandle = Meteor.subscribe('users');
@@ -33,6 +50,10 @@ class Player extends Component {
     return (
       <View style={styles.row}>
         <Text style={styles.rowText}>{ this.getUserName()} ({this.props.dataItem.hp}/{this.props.dataItem.mp})</Text>
+        <CheckBox label=''
+                  checked={this.state.selected}
+                  onChange={  this.onSelectedChanged.bind(this)}
+        />
       </View>
     );
   }
