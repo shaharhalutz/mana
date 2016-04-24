@@ -31,11 +31,26 @@ class Wand extends Component {
   }
 
   getMeteorData() {
-    //const itemsHandle = Meteor.subscribe('spells');
+
+    const itemsHandle = Meteor.subscribe('spells');
     return {
-      //spellsReady: itemsHandle.ready()
-      spellsReady:true
+      spellsReady: itemsHandle.ready()
     };
+  }
+
+  // TBD: use user convenience method to encapsulate user implementation
+  getUserSpellIds(){
+    return Meteor.user().profile.spellIds;
+  }
+
+  renderSpellOptions(){
+    const spells = Meteor.collection('spells').find({_id: {$in: this.getUserSpellIds() }});
+
+    return(
+      spells.map(function(spell) {
+        return <Option value={spell._id} key={spell._id} >{spell.name}</Option>;
+      })
+    );
   }
 
   render() {
@@ -56,10 +71,9 @@ class Wand extends Component {
             optionListRef={this._getOptionList.bind(this)}
             defaultValue="Select a Spell"
             onSelect={this._onSpellSelected.bind(this)}>
-            <Option>Fireball</Option>
-            <Option>Lightning</Option>
-            <Option>Heal</Option>
-            <Option>Yukon</Option>
+
+              {this.renderSpellOptions()}
+
           </Select>
 
           <Text>Selected Spell: {this.state.selectedSpellId}</Text>
