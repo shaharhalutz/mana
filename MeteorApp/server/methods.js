@@ -42,8 +42,13 @@ Meteor.methods({
       // DEBUG:
       const newPlayer = Players.findOne({_id : newPlayerId});
       if(newPlayer){
-        console.log('joinBattle:  done. Players joined: '+newPlayer.userInfo().emails[0].address);
+        console.log('joinBattle:  done. Players joined: '+newPlayer.userInfo().profile.name);
       }
     }
+  },
+
+  'processSpell': function(spellId) {
+    console.log('Server: processSpell:  called. spellId: '+spellId);
+
   }
 });
