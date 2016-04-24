@@ -2,8 +2,8 @@
 // 1.TEST Backend Functionality:
 // TBD: do we create a compositeSurscribe per component? - https://atmospherejs.com/reywood/publish-composite
 // TBD: rethink collection helpers (model behaviours) maybe components will correlate to model and implement behaviour themselves. - (try with player component below:)
-// TBD: implement Player component to separate from battle compoenent
 // TBD: create temporary wand component (spell dropdown), and checkboxes on players to select target for cast.
+// TBD: should we getSpells in battle compoenent or in wand compoenent ?
 
 // 2. R & D on wand component (casting / spell identification)
 // 3. R & D on player component (visualizing spell being cast / active effects on player etc ..)
@@ -12,6 +12,7 @@
 import React, { View, Text, Component, StyleSheet, TouchableOpacity } from 'react-native';
 import Meteor, { connectMeteor, MeteorComplexListView } from 'react-native-meteor';
 import Player from './player';
+import Wand from './wand';
 
 @connectMeteor
 class Battle extends Component {
@@ -58,7 +59,11 @@ class Battle extends Component {
     const players = Meteor.collection('players').find({battleId:this.props.battleId});
     return players;
   }
-  
+
+  onCastSpell(spellId){
+    console.log('onCastSpell:'+spellId);
+  }
+
   render() {
     const { playersReady } = this.data;
     if (!playersReady) {
@@ -74,7 +79,10 @@ class Battle extends Component {
         <MeteorComplexListView
           style={styles.container}
           elements={this.getPlayers.bind(this)}
-          renderRow={this.renderRow.bind(this)}        />
+          renderRow={this.renderRow.bind(this)}
+        />
+        <Wand onCastSpell={this.onCastSpell.bind(this)}>
+        </Wand>
       </View>
     );
   }
