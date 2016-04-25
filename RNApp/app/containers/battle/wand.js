@@ -1,6 +1,7 @@
 import React, { View, Text, Component, StyleSheet, TouchableOpacity } from 'react-native';
 import Meteor, { connectMeteor, MeteorListView } from 'react-native-meteor';
 import DropDown, { Select, Option, OptionList } from 'react-native-selectme';
+import Button from '../../components/button';
 
 
 
@@ -26,8 +27,6 @@ class Wand extends Component {
       ...this.state,
       selectedSpellId: spellId
     });
-
-    this.props.onCastSpell(this.state.selectedSpellId);
   }
 
   getMeteorData() {
@@ -76,8 +75,10 @@ class Wand extends Component {
 
           </Select>
 
-          <Text>Selected Spell: {this.state.selectedSpellId}</Text>
-
+          <View style={styles.buttonContainer}>
+            <Button text="Cast" onPress={() => this.props.onCastSpell(this.state.selectedSpellId)}
+                                onPressIn={() => console.log('wand pressIn')} />
+          </View>
           <OptionList ref="OPTIONLIST"/>
       </View>
     );
@@ -89,6 +90,12 @@ export default Wand;
 const styles = StyleSheet.create({
   container: {
     flex: 1
+  },
+  buttonContainer: {
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: '#CCCCCC'
   },
   row: {
     borderBottomWidth: StyleSheet.hairlineWidth,

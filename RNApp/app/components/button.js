@@ -8,9 +8,9 @@ import React, {
 
 export default class Button extends Component {
   render() {
-    let { text, onPress } = this.props;
+    let { text, onPress ,onPressIn} = this.props;
     return (
-      <TouchableOpacity style={styles.button} onPress={onPress}>
+      <TouchableOpacity style={styles.button} onPress={onPress} onPressIn={onPressIn}>
         <Text style={styles.buttonText}>
           {text}
         </Text>
@@ -21,7 +21,9 @@ export default class Button extends Component {
 
 Button.defaultProps = {
   text: "Button Text",
-  onPress: () => console.log('Button Pressed')
+  onPress: () => console.log('Button Pressed'),
+  onPressIn: () => console.log('Button Pressed In')
+
 };
 
 const styles = StyleSheet.create({
