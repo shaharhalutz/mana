@@ -11,6 +11,7 @@ class Wand extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      potency:100,
       selectedSpellId: ''
     };
   }
@@ -76,8 +77,8 @@ class Wand extends Component {
           </Select>
 
           <View style={styles.buttonContainer}>
-            <Button text="Cast" onPress={() => this.props.onCastSpell(this.state.selectedSpellId)}
-                                onPressIn={() => console.log('wand pressIn')} />
+            <Button text="Cast" onPress={() => this.props.onCastEnd(this.state.potency)}
+                                onPressIn={() => this.props.onCastStart(this.state.selectedSpellId)} />
           </View>
           <OptionList ref="OPTIONLIST"/>
       </View>

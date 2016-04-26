@@ -47,8 +47,15 @@ Meteor.methods({
     }
   },
 
-  'processSpell': function(spellId) {
-    console.log('Server: processSpell:  called. spellId: '+spellId);
+  'createSpellInstance': function(spellId,casterId,targetIds) {
+    console.log('createSpellInstance: spellId: '+spellId);
+    console.log('createSpellInstance: casterId: '+casterId);
+    console.log('createSpellInstance: targetIds count: '+targetIds.length);
+  },
+
+  'processSpellInstance': function(spellInstanceId,potency) {
+    console.log('processSpellInstance: spellInstanceId: '+spellInstanceId);
+    console.log('processSpellInstance: potency: '+potency);
 
   }
 });

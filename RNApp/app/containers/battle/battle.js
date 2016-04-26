@@ -60,9 +60,30 @@ class Battle extends Component {
     return players;
   }
 
-  onCastSpell(spellId){
-    console.log('onCastSpell:'+spellId);
-    Meteor.call('processSpell',spellId);
+  onCastStart(spellId){
+    console.log('onCastStart: spellId:'+spellId);
+    const currentPlayer = Meteor.collection('players').findOne({battleId:this.props.battleId,userId:Meteor.userId()});
+    if(currentPlayer){
+      Meteor.call('createSpellInstance',spellId,currentPlayer._id,this.state.selectedPlayerIds);
+      return;
+    }
+
+    // error handlng:
+    console.log('couldnt find current Player.');
+
+  }
+
+  onCastEnd(potency){
+    console.log('onCastEnd: potency:'+potency);
+    const currentPlayer = Meteor.collection('players').findOne({battleId:this.props.battleId,userId:Meteor.userId()});
+    if(currentPlayer){
+      Meteor.call('processSpellInstance',currentPlayer.instanceBeingCast,potency);
+      return;
+    }
+
+    // error handlng:
+    console.log('couldnt find current Player.');
+
   }
 
   render() {
@@ -82,7 +103,8 @@ class Battle extends Component {
           elements={this.getPlayers.bind(this)}
           renderRow={this.renderRow.bind(this)}
         />
-        <Wand onCastSpell={this.onCastSpell.bind(this)}>
+        <Wand onCastStart={this.onCastStart.bind(this)}
+              onCastEnd={this.onCastEnd.bind(this)}>
         </Wand>
       </View>
     );
