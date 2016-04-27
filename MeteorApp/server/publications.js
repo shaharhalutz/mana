@@ -17,3 +17,7 @@ Meteor.publish('users', function() {
 Meteor.publish('spells', function() {
   return Spells.find();
 });
+
+Meteor.publish('spellInstances', function() {
+  return SpellInstances.find();
+});

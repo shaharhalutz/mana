@@ -36,7 +36,8 @@ Meteor.methods({
     if (!joinedAlready){
       const newPlayerId = Players.insert({
         userId:Meteor.userId(),
-        battleId:_id
+        battleId:_id,
+        instanceBeingCast:null
       });
 
       // DEBUG:
@@ -51,11 +52,27 @@ Meteor.methods({
     console.log('createSpellInstance: spellId: '+spellId);
     console.log('createSpellInstance: casterId: '+casterId);
     console.log('createSpellInstance: targetIds count: '+targetIds.length);
+
+    const spellInstanceId = SpellInstances.insert({
+      processed: false,
+      createdAt: new Date(),
+      spellId: spellId,
+      casterId:casterId,
+      targetIds:targetIds
+    });
+    Players.update({_id: casterId}, {$set: {instanceBeingCast: spellInstanceId}});
   },
 
   'processSpellInstance': function(spellInstanceId,potency) {
     console.log('processSpellInstance: spellInstanceId: '+spellInstanceId);
     console.log('processSpellInstance: potency: '+potency);
+
+    const spellInstance = SpellInstances.findOne({_id : spellInstanceId});
+
+
+    Players.update({_id: spellInstance.casterId}, {$set: {instanceBeingCast: null}});
+    SpellInstances.update({_id: spellInstance.casterId}, {$set: {processed: true}});
+
 
   }
 });

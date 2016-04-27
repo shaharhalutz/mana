@@ -23,6 +23,8 @@ class Player extends Component {
 
   getMeteorData() {
     const itemsHandle = Meteor.subscribe('users');
+    const itemsHandle2 = Meteor.subscribe('players');
+
     return {
       usersReady: itemsHandle.ready()
     };
@@ -45,6 +47,19 @@ class Player extends Component {
     return this.userInfo().profile.hp;
   }
 
+  renderCurrentlyCasting(){
+    console.log('player:');
+    console.dir(this.props.dataItem);
+
+    if (this.props.dataItem.instanceBeingCast) {
+        return(
+          <View>
+            <Text>{this.props.dataItem.instanceBeingCast}</Text>
+          </View>
+        )
+    }
+  }
+
   render() {
     const { usersReady } = this.data;
     if (!usersReady) {
@@ -62,6 +77,7 @@ class Player extends Component {
                   checked={this.state.selected}
                   onChange={  this.onSelectedChanged.bind(this)}
         />
+        {this.renderCurrentlyCasting()}
       </View>
     );
   }
