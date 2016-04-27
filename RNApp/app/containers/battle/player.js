@@ -49,7 +49,7 @@ class Player extends Component {
 
   renderCurrentlyCasting(){
     console.log('player:');
-    console.dir(this.props.dataItem);
+    //console.dir(this.props.dataItem);
 
     if (this.props.dataItem.instanceBeingCast) {
         return(
