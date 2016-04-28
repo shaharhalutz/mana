@@ -68,11 +68,6 @@ Meteor.methods({
     console.log('processSpellInstance: potency: '+potency);
 
     const spellInstance = SpellInstances.findOne({_id : spellInstanceId});
-
-
-    Players.update({_id: spellInstance.casterId}, {$set: {instanceBeingCast: null}});
-    SpellInstances.update({_id: spellInstance.casterId}, {$set: {processed: true}});
-
-
+    spellInstance.processSpell();
   }
 });
