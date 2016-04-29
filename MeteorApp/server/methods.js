@@ -53,13 +53,22 @@ Meteor.methods({
     console.log('createSpellInstance: casterId: '+casterId);
     console.log('createSpellInstance: targetIds count: '+targetIds.length);
 
+    const spell = Spells.findOne({_id : spellId});
+    if(!spell){
+      console.log('Error spell wasnt found.');
+      return;
+    }
+
     const spellInstanceId = SpellInstances.insert({
       processed: false,
       createdAt: new Date(),
       spellId: spellId,
       casterId:casterId,
-      targetIds:targetIds
+      targetIds:targetIds,
+      targetEffects:spell.spellTargetsEffectsIds,
+      casterEffects:spell.spellTargetsEffectsIds
     });
+
     Players.update({_id: casterId}, {$set: {instanceBeingCast: spellInstanceId}});
   },
 

@@ -22,11 +22,34 @@ class Battle extends Component {
     this.state = {
       selectedPlayerIds: []
     };
+    /*
+    Meteor.ddp.on('changed', function(objectChanged) {
+
+      // TBD:get instance spell effects and attache to targets on setState , and feed state to props of players
+      if(objectChanged.collection === 'spellInstances'){
+        const spellInstance = objectChanged;
+        // on spell processed  - show spell effects on target players:
+        if(spellInstance.fields && spellInstances.fields.processed){
+
+          const currentSpellInstance = Meteor.collection('spellInstances').find( { _id: spellInstance.id});
+          const spellTargetEffects = Meteor.collection('effects').find( { _id:{"$all": currentSpellInstance.targetEffects } });
+
+          // add to active effects set  on all target's state
+
+        }
+
+      }
+
+    });
+    */
   }
   getMeteorData() {
-    const itemsHandle = Meteor.subscribe('players');
+    const itemsHandle = Meteor.subscribe('players',this.props.battleId);
+    const spellInstancesHandle = Meteor.subscribe('spellInstances',this.props.battleId);
+
     return {
-      playersReady: itemsHandle.ready()
+      playersReady: itemsHandle.ready(),
+      spellInstancesready:spellInstancesHandle.ready()
     };
   }
 

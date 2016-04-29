@@ -6,8 +6,8 @@ Meteor.publish('battles', function() {
   return Battles.find();
 });
 
-Meteor.publish('players', function() {
-  return Players.find();
+Meteor.publish('players', function(battleId) {
+  return Players.find({battleId:battleId});
 });
 
 Meteor.publish('users', function() {
@@ -18,6 +18,10 @@ Meteor.publish('spells', function() {
   return Spells.find();
 });
 
-Meteor.publish('spellInstances', function() {
-  return SpellInstances.find();
+Meteor.publish('effects', function() {
+  return Effects.find();
+});
+
+Meteor.publish('spellInstances', function(battleId) {
+  return SpellInstances.find({battleId:battleId});
 });
