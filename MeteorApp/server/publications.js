@@ -25,3 +25,7 @@ Meteor.publish('effects', function() {
 Meteor.publish('spellInstances', function(battleId) {
   return SpellInstances.find({battleId:battleId});
 });
+
+Meteor.publish('effectInstances', function(battleId) {
+  return EffectInstances.find({battleId:battleId});
+});

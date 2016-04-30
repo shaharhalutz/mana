@@ -34,6 +34,7 @@ var spellInstance = {
         spell.targetEffects().forEach( function(effect) {
           // Players.update({_id: target._id}, {$addToSet: {'activeEffectIds': effect._id}});
           console.log('add target effect: ' + effect.name + ' on: '+ target.userInfo().profile.name);
+          EffectInstances.insert({playerId:target._id,hp:effect.hp,name:effect.name});
 
         });
 
