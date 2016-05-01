@@ -1,6 +1,7 @@
 import React, { View, Text, Component, StyleSheet, TouchableOpacity ,ListView} from 'react-native';
 import Meteor, { connectMeteor, MeteorListView,MeteorComplexListView } from 'react-native-meteor';
 import CheckBox from 'react-native-checkbox';
+import Effect from './effect';
 
 // TBD: instead of using ListView try using complexListView from the example and getElements, should adjust its elements according to
 //      the spellInstance which was cast. (should be reactive out of the box.)
@@ -67,6 +68,26 @@ class Player extends Component {
 
   }
 
+  isMe(){
+    return (this.userInfo()._id == Meteor.userId() )
+  }
+
+  getEffectTimer(){
+    if(this.isMe()){
+      return 5000;
+    }
+    else{
+      return 0;
+    }
+  }
+
+  processEffect(effect){
+    console.log('processEffect : '+effect._id);
+    //Meteor.collection('effectInstances').remove(effect._id);
+    Meteor.call('processEffect',effect._id);
+
+  }
+
   render() {
     const { usersReady } = this.data;
     if (!usersReady) {
@@ -89,7 +110,7 @@ class Player extends Component {
         <MeteorComplexListView
           style={styles.container}
           elements={this.getActiveEffects.bind(this)}
-          renderRow={(rowData) => <Text>{rowData.name}</Text>}
+          renderRow={ (rowData) => <Effect data={rowData} timerDuration = {this.getEffectTimer()} onDurationExpired = {this.processEffect}/>}
         />
 
       </View>

@@ -70,6 +70,7 @@ Meteor.methods({
     });
 
     Players.update({_id: casterId}, {$set: {instanceBeingCast: spellInstanceId}});
+    return spellInstanceId;
   },
 
   'processSpellInstance': function(spellInstanceId,potency) {
@@ -78,5 +79,14 @@ Meteor.methods({
 
     const spellInstance = SpellInstances.findOne({_id : spellInstanceId});
     spellInstance.processSpell();
+  },
+
+  'processEffect': function(effectId) {
+    console.log('processEffect: effectId: '+effectId);
+
+    EffectInstances.remove(effectId);
   }
+
+
+
 });

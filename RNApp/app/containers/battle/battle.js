@@ -4,7 +4,7 @@
 // TBD: rethink collection helpers (model behaviours) maybe components will correlate to model and implement behaviour themselves. - (try with player component below:)
 // TBD: create temporary wand component (spell dropdown), and checkboxes on players to select target for cast.
 // TBD: should we getSpells in battle compoenent or in wand compoenent ?
-
+// TBD: try and remove meteor method calls and do everything on client
 // 2. R & D on wand component (casting / spell identification)
 // 3. R & D on player component (visualizing spell being cast / active effects on player etc ..)
 
@@ -22,27 +22,8 @@ class Battle extends Component {
     this.state = {
       selectedPlayerIds: []
     };
-    /*
-    Meteor.ddp.on('changed', function(objectChanged) {
-
-      // TBD:get instance spell effects and attache to targets on setState , and feed state to props of players
-      if(objectChanged.collection === 'spellInstances'){
-        const spellInstance = objectChanged;
-        // on spell processed  - show spell effects on target players:
-        if(spellInstance.fields && spellInstances.fields.processed){
-
-          const currentSpellInstance = Meteor.collection('spellInstances').find( { _id: spellInstance.id});
-          const spellTargetEffects = Meteor.collection('effects').find( { _id:{"$all": currentSpellInstance.targetEffects } });
-
-          // add to active effects set  on all target's state
-
-        }
-
-      }
-
-    });
-    */
   }
+
   getMeteorData() {
     const itemsHandle = Meteor.subscribe('players',this.props.battleId);
     const spellInstancesHandle = Meteor.subscribe('spellInstances',this.props.battleId);
@@ -84,10 +65,20 @@ class Battle extends Component {
   }
 
   onCastStart(spellId){
+
     console.log('onCastStart: spellId:'+spellId);
     const currentPlayer = Meteor.collection('players').findOne({battleId:this.props.battleId,userId:Meteor.userId()});
     if(currentPlayer){
-      Meteor.call('createSpellInstance',spellId,currentPlayer._id,this.state.selectedPlayerIds);
+      Meteor.call('createSpellInstance',spellId,currentPlayer._id,this.state.selectedPlayerIds,function(error, newInstanceId){
+
+        console.log('spellInstance was created. id: '+newInstanceId);
+        // TBD: if currentCastEnded ,we can now call onCastEnd (protect against cases when wand moves faster than database :)
+        //if(state.currentCast.Ended){
+        //  this.onCastEnd(state.currentCast.potency);
+        //}
+
+      });
+
       return;
     }
 
@@ -97,6 +88,7 @@ class Battle extends Component {
   }
 
   onCastEnd(potency){
+
     console.log('onCastEnd: potency:'+potency);
     const currentPlayer = Meteor.collection('players').findOne({battleId:this.props.battleId,userId:Meteor.userId()});
     if(currentPlayer){
