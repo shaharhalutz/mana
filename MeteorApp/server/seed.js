@@ -13,38 +13,43 @@ Meteor.startup(function () {
     }
   }
 
+  let ROUND_DURATION = 1000;
 
-  /*
   // set up interval to simulate rounds for battle spells (if there are spells in the DB):
   Meteor.setInterval(function(){
 
     // mana recuperation:
-    UserStates.find({}).forEach( function(userState) {
-        if(userState.mp < userState.author().profile.mp){
-                UserStates.update({_id: userState._id}, {$inc: {mp: 1}});
+    Players.find({}).forEach( function(player) {
+        if(player.mp < player.userInfo().profile.mp){
+                Players.update({_id: player._id}, {$inc: {mp: 1}});
         }
     });
 
     // process active duration spells on target:
-    Comments.find({ duration: { $gt: 0 } }).forEach( function(spellInstance) {
-        console.log('spell has duration - activating:'+spellInstance.spell().name);
-        spellInstance.activateTargetEffects();
+    EffectInstances.find({ duration: { $gt: -1 } }).forEach( function(effectInstance) {
 
-        if(spellInstance.duration === 1){
+        console.log('effect duration : '+effectInstance.duration);
+        if(effectInstance.duration < 1){
+          console.log('removing effect: duration is 1 ');
 
-          // remove from acitve spells: (we can assuume that active spells have only one target )
-          var targetStates =  spellInstance.targetsUserStates().fetch();
-          if(targetStates.length){
-              UserStates.update({_id: targetStates[0]._id}, {$pull: {'activeSpellIds': spellInstance._id}});
-          }
+          // remove from acitve effects:
+          EffectInstances.remove(effectInstance._id);
         }
+        else{
+          console.log('effect has duration - activating:'+effectInstance.name);
+          //effectInstance.activateTargetEffects();
+          Players.update({_id:effectInstance.playerId}, {$inc: {hp:-10}});
 
-        Comments.update({_id: spellInstance._id}, {$inc: {duration:-1}});
+          console.log('decreesing duration ');
+
+          EffectInstances.update({_id: effectInstance._id}, {$inc: {duration:-1}});
+
+        }
 
     });
 
-  }, 6000);
-  */
+  }, 3*ROUND_DURATION);
+
 
   var spells = [
   {

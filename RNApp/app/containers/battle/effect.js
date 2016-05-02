@@ -1,52 +1,55 @@
+// TBD: introduce clock to battle compoenent and trickle down ticks to players(mana) and effects(duration/rounds).
+// TBD: remove interval from effects component and listen to process effect (somehow)
 import React, { View, Text, Component, StyleSheet} from 'react-native';
-//import Meteor, { connectMeteor, MeteorListView,MeteorComplexListView } from 'react-native-meteor';
 
-//@connectMeteor
 class Effect extends Component {
 
-  /*
+
   constructor(props) {
     super(props);
 
     this.state = {
-      timeout: null
+      showBadge: false,
+      previousDuration:0
     };
   }
-*/
 
   componentDidMount() {
-    /*
-    if(this.props.timerDuration){
 
-      this.timer = setTimeout(() => {
-        console.log('I do not leak!');
-        this.props.onDurationExpired(this.props.data);
-      }, 5000);
-    }
-    */
+     this.badgeTimeout = setInterval(() => {
+
+       // check if duration changed:
+       this.setState({showBadge : (this.state.previousDuration && (this.state.previousDuration !=  this.props.data.duration)),
+                      previousDuration:this.props.data.duration});
+     }, 1000);
   }
 
+
   componentWillUnmount() {
-    if(this.timer){
-      clearTimeout(this.timer);
+      clearTimeout( this.badgeTimeout);
+  }
+
+  renderBadge(){
+
+    //if(this.state.showBadge){
+    if(this.state.showBadge){
+      return(
+        <Text>{this.props.data.hp}</Text>
+      );
     }
+    return (<Text></Text>);
   }
 
   render() {
-    if(this.props.timerDuration){
 
-      this.timer = setTimeout(() => {
-        console.log('I do not leak!');
-        this.props.onDurationExpired(this.props.data);
-      }, 5000);
-    }
-      console.log('rendering:'+this.props.data.name);
-      return (
-        <View>
-          <Text>{this.props.data.name}</Text>
-        </View>
-      )
+    console.log('rendering:'+this.props.data.name);
 
+    return (
+      <View>
+        <Text>{this.props.data.name}</Text>
+        {this.renderBadge()}
+      </View>
+    )
   }
 }
 

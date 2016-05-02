@@ -84,7 +84,7 @@ class Player extends Component {
   processEffect(effect){
     console.log('processEffect : '+effect._id);
     //Meteor.collection('effectInstances').remove(effect._id);
-    Meteor.call('processEffect',effect._id);
+    Meteor.call('effectDurationExpired',effect._id);
 
   }
 

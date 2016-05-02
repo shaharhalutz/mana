@@ -20,8 +20,21 @@ class Battle extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedPlayerIds: []
+      selectedPlayerIds: [],
+      ticks:0
     };
+  }
+
+  componentDidMount(){
+    this.clock = setInterval(() => {
+      //console.log('inc tick:'+this.state.ticks);
+      this.setState({selectedPlayerIds:this.state.selectedPlayerIds,ticks:(this.state.ticks+1)});
+    }, 1000);
+  }
+
+  componentWillUnmount(){
+    clearTimeout(this.clock);
+    console.log('clearing clock interval');
   }
 
   getMeteorData() {
@@ -110,9 +123,10 @@ class Battle extends Component {
         </View>
       )
     }
-
+// <Text>Ticks: {this.state.ticks}</Text>
     return (
       <View style={styles.container}>
+
         <MeteorComplexListView
           style={styles.container}
           elements={this.getPlayers.bind(this)}

@@ -35,6 +35,8 @@ Meteor.methods({
     const joinedAlready = Players.findOne({userId : Meteor.userId(),battleId:_id});
     if (!joinedAlready){
       const newPlayerId = Players.insert({
+        hp:Meteor.user().profile.hp,
+        mp:0,//Meteor.user().profile.mp,
         userId:Meteor.userId(),
         battleId:_id,
         instanceBeingCast:null
@@ -81,12 +83,17 @@ Meteor.methods({
     spellInstance.processSpell();
   },
 
-  'processEffect': function(effectId) {
+  'effectProcess': function(effectId) {
+    console.log('processEffect: effectId: '+effectId);
+
+    EffectInstances.remove(effectId);
+  },
+
+  'effectDurationExpired': function(effectId) {
     console.log('processEffect: effectId: '+effectId);
 
     EffectInstances.remove(effectId);
   }
-
 
 
 });
