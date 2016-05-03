@@ -1,6 +1,7 @@
 // TBD: introduce clock to battle compoenent and trickle down ticks to players(mana) and effects(duration/rounds).
 // TBD: remove interval from effects component and listen to process effect (somehow)
 import React, { View, Text, Component, StyleSheet} from 'react-native';
+import Animatable from 'react-native-animatable';
 
 class Effect extends Component {
 
@@ -34,7 +35,8 @@ class Effect extends Component {
     //if(this.state.showBadge){
     if(this.state.showBadge){
       return(
-        <Text>{this.props.data.hp}</Text>
+        <Animatable.Text animation="flipInX" >{this.props.data.hp}</Animatable.Text>
+
       );
     }
     return (<Text></Text>);
