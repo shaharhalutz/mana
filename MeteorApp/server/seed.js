@@ -19,6 +19,7 @@ Meteor.startup(function () {
   Meteor.setInterval(function(){
 
     // mana recuperation:
+    // TBD: only query for players with lacking mp (todo that we need to - on player creation add maxMP from profile ) 
     Players.find({}).forEach( function(player) {
         if(player.mp < player.userInfo().profile.mp){
                 Players.update({_id: player._id}, {$inc: {mp: 1}});
