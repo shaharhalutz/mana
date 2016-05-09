@@ -5,6 +5,7 @@ import Accounts from './containers/accounts';
 import BattlesContainer from './containers/battles';
 import Dojo from './containers/dojo';
 import Battle from './containers/battle/battle';
+import Game from './containers/game/game';
 
 
 const Router = {
@@ -64,6 +65,18 @@ const Router = {
 
       getTitle() {
         return 'Battle Detail';
+      }
+    }
+  },
+
+  getGame(battleId) {
+    return {
+      renderScene(nav) {
+        return <Game/>
+      },
+
+      getTitle() {
+        return 'Game';
       }
     }
   }

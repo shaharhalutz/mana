@@ -11,8 +11,11 @@
 
 import React, { View, Text, Component, StyleSheet, TouchableOpacity } from 'react-native';
 import Meteor, { connectMeteor, MeteorComplexListView } from 'react-native-meteor';
-import Player from './player';
+import Participant from './participant';
 import Wand from './wand';
+import Button from '../../components/button';
+import Router from '../../router';
+
 
 @connectMeteor
 class Battle extends Component {
@@ -67,8 +70,8 @@ class Battle extends Component {
 
   renderRow(item) {
     return (
-      <Player dataItem={item} onSelectedChanged={this.onPlayerSelectionChanged.bind(this)}>
-      </Player>
+      <Participant dataItem={item} onSelectedChanged={this.onPlayerSelectionChanged.bind(this)}>
+      </Participant>
     );
   }
 
@@ -114,6 +117,18 @@ class Battle extends Component {
 
   }
 
+  start(){
+    console.log('start battle.');
+    // open Battle Detail:
+    const { navigator } = this.props;
+    navigator.push(Router["getGame"]());
+  }
+
+  join(){
+    console.log('join battle.');
+    const battleId = this.props.battleId;
+  }
+
   render() {
     const { playersReady } = this.data;
     if (!playersReady) {
@@ -132,9 +147,11 @@ class Battle extends Component {
           elements={this.getPlayers.bind(this)}
           renderRow={this.renderRow.bind(this)}
         />
-        <Wand onCastStart={this.onCastStart.bind(this)}
-              onCastEnd={this.onCastEnd.bind(this)}>
-        </Wand>
+
+        <View style={styles.buttonContainer}>
+          <Button text="Join" onPress={() => Meteor.call('joinBattle',this.props.battleId)} />
+          <Button text="Start" onPress={() => this.start()} />
+        </View>
       </View>
     );
   }

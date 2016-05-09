@@ -13,9 +13,9 @@ class BattlesContainer extends Component {
     };
   }
 
-  handleJoinBattle(item) {
+  goToBattleDetail(item) {
     //const { battle } = {item};
-    Meteor.call('joinBattle',item._id);
+    //Meteor.call('joinBattle',item._id);
 
     // open Battle Detail:
     const { navigator } = this.props;
@@ -24,10 +24,10 @@ class BattlesContainer extends Component {
 
   renderRow(item) {
     return (
-      <View style={styles.row}>
+      <View style={styles.row} >
         <Text style={styles.rowText}>{item.name}</Text>
         <View style={styles.buttonContainer}>
-          <Button text="Join" onPress={() => this.handleJoinBattle(item)} />
+          <Button text="Details" onPress={() => this.goToBattleDetail(item)} />
         </View>
         <TouchableOpacity onPress={() => Meteor.call('removeBattle', item._id)}>
           <Text style={[styles.rowText, styles.deleteText]}>X</Text>
