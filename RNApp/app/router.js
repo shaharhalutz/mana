@@ -7,6 +7,11 @@ import Dojo from './containers/dojo';
 import Battle from './containers/battle/battle';
 import Game from './containers/game/game';
 
+// redux:
+import { Provider } from 'react-redux';
+import createStore from './store';
+const store = createStore();
+
 
 const Router = {
   getList() {
@@ -72,7 +77,11 @@ const Router = {
   getGame(battleId) {
     return {
       renderScene(nav) {
-        return <Game/>
+        return (
+          <Provider store={store}>
+            <Game />
+          </Provider>
+        )
       },
 
       getTitle() {
